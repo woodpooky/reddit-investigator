@@ -22,7 +22,7 @@ Check any Reddit user’s comment and post history within a specific subreddit.
 
 ### Setup: 
 
-1. Clone the repository or download the repository zip
+1. Clone the repository or download the repository zip (from the "Code" button at the top)
 
 2. Update the config.yaml file with your own client_id and secret (API credentials) from Reddit.
     -  🔐 You can get Reddit API credentials from: https://www.reddit.com/prefs/apps and select "script" as an app type.
