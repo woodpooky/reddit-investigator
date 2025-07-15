@@ -16,9 +16,9 @@ Check any Reddit user’s comment and post history within a specific subreddit.
 
 ### Requirements:
 
-    Docker Desktop installed
-    (Ensure Docker Compose is enabled — included by default)
-    Link: https://www.docker.com/ja-jp/products/docker-desktop/
+- Docker Desktop installed
+  (Ensure Docker Compose is enabled — included by default)
+- Link: https://www.docker.com/ja-jp/products/docker-desktop/
 
 ### Setup: 
 
