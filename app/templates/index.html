@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+<head>
+    <title>Reddit Activity Checker</title>
+    <style>
+        body { font-family: Arial; max-width: 800px; margin: auto; padding: 2em; }
+        input, button { padding: 0.5em; margin: 0.5em 0; width: 100%; }
+        .activity { margin-top: 2em; }
+        .spinner {
+            display: none;
+            font-style: italic;
+            color: #555;
+            margin-top: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1em;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 0.5em;
+            text-align: left;
+        }
+        th {
+            background: #f2f2f2;
+            cursor: pointer;
+        }
+        .sort-indicator {
+            font-size: 0.8em;
+            color: #999;
+            margin-left: 4px;
+        }
+    </style>
+    <script>
+        function showSpinner() {
+            document.getElementById("spinner").style.display = "block";
+        }
+
+        function handleEnter(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                document.getElementById("checkForm").submit();
+                showSpinner();
+            }
+        }
+
+        function sortTable(columnIndex, isDate = false) {
+            const table = document.getElementById("activityTable");
+            const rows = Array.from(table.rows).slice(1); // skip header row
+            const asc = table.getAttribute("data-sort-dir") !== "asc";
+
+            rows.sort((a, b) => {
+                let aText = a.cells[columnIndex].innerText;
+                let bText = b.cells[columnIndex].innerText;
+
+                if (isDate) {
+                    return asc
+                        ? new Date(bText) - new Date(aText)
+                        : new Date(aText) - new Date(bText);
+                }
+
+                return asc
+                    ? aText.localeCompare(bText)
+                    : bText.localeCompare(aText);
+            });
+
+            rows.forEach(row => table.tBodies[0].appendChild(row));
+            table.setAttribute("data-sort-dir", asc ? "asc" : "desc");
+        }
+
+        window.onload = function() {
+            document.getElementById("checkForm").addEventListener("submit", showSpinner);
+            document.getElementById("username").addEventListener("keydown", handleEnter);
+            document.getElementById("subreddit").addEventListener("keydown", handleEnter);
+        };
+    </script>
+</head>
+<body>
+    <h1>🔍 Reddit Activity Checker</h1>
+
+    <form method="post" id="checkForm">
+        <input type="text" name="username" id="username" placeholder="Reddit Username (eg. batman)" required>
+        <input type="text" name="subreddit" id="subreddit" placeholder="Subreddit Name (without /r/ prefix)" required>
+        <button type="submit">Check Activity</button>
+    </form>
+
+    <div id="spinner" class="spinner">Checking activity... this may take a few moments⏳</div>
+
+    {% if result %}
+        {% if result.error %}
+            <p style="color: red;">{{ result.error }}</p>
+        {% else %}
+            <p><strong>Account Created:</strong> {{ result.created_date }}</p>
+            <div class="activity">
+                <h3>Activity in r/{{ result.subreddit }}:</h3>
+                {% if result.activity %}
+                    <table id="activityTable" data-sort-dir="desc">
+                        <thead>
+                            <tr>
+                                <th onclick="sortTable(0)">Type <span class="sort-indicator">⇅</span></th>
+                                <th>Link</th>
+                                <th onclick="sortTable(2, true)">Date Posted (UTC) <span class="sort-indicator">⇅</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for item in result.activity %}
+                        <tr>
+                            <td>{{ item.type|capitalize }}</td>
+                            <td><a href="{{ item.url }}" target="_blank">{{ item.url }}</a></td>
+                            <td>{{ item.created.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>No activity found in r/{{ result.subreddit }}.</p>
+                {% endif %}
+            </div>
+        {% endif %}
+    {% endif %}
+</body>
+</html>

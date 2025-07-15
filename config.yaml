@@ -1,0 +1,5 @@
+# config.yaml
+reddit:
+  client_id: YOUR_CLIENT_ID_HERE
+  client_secret: YOUR_SECRET_HERE
+  user_agent: script:reddit-checker:v1.0 (by u/yourusername)

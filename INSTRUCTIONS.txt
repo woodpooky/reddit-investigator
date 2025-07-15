@@ -1,0 +1,77 @@
+REDDIT ACTIVITY CHECKER
+========================
+
+A simple web app to check any Reddit user's activity (posts and comments)
+in a specific subreddit. 
+
+Runs locally in your browser using Docker. No coding experience required.
+
+---
+
+SETUP INSTRUCTIONS
+==================
+
+1. Install Docker Desktop:
+   https://www.docker.com/products/docker-desktop
+
+2. Create a Reddit API app:
+   - Go to: https://www.reddit.com/prefs/apps
+   - Click "Create App"
+   - Choose type: "script"
+   - Name it anything
+   - Redirect URI: http://localhost
+   - Copy your "client ID" and "client secret" (NOTE: client ID is the random string under where it says "personal use script")
+
+3. Open "config.yaml" file in a text editor and update the "client_id" and "client_secret" fields then save:
+
+   Example:
+   --------
+   reddit:
+     client_id: lafkhsifhsd9ghd
+     client_secret: lkbfSDf9sd9gsg0od9gyh0
+     user_agent: script:reddit-checker:v1.0 (by u/YOUR_USERNAME)
+
+---
+
+RUNNING THE APP
+===============
+
+1. From a terminal or command prompt, navigate to the project folder:
+
+Windows: Shift+right click inside a blank area in the folder> open terminal / powershell
+Mac: Right click the folder>New Terminal At Folder
+
+
+2. For all platforms (Windows/macOS/Linux) copy and paste the following command into terminal/command prompt/powershell:
+
+    docker compose up --build
+
+
+3. Then open your browser and go to the URL:
+
+    http://localhost:5000
+
+---
+
+USING THE APP
+=============
+
+1. Enter a Reddit username (no /u/)
+2. Enter a subreddit name (no /r/)
+3. Click "Check Activity"
+
+You will see:
+- Account creation date
+- All posts/comments by the user in that subreddit
+- Results shown in a sortable table (submission/commnet & date by oldest/newest)
+
+---
+
+TO STOP THE APP
+===============
+
+Press Ctrl+C in the terminal, or run:
+
+    docker compose down
+
+---
