@@ -50,7 +50,7 @@ Check any Reddit user’s comment and post history within a specific subreddit.
 
 3. Then run the below command:
 
-    docker compose up --build
+        docker compose up --build
 
 
 4. Open your browser and go to:
